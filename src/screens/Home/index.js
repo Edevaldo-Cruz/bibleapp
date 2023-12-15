@@ -25,10 +25,6 @@ export default function Login() {
     setHidePassword(!hidePassword);
   };
 
-  const handlePressHome = () => {
-    navigation.navigate("Home");
-  };
-
   const handlePressBack = () => {
     navigation.navigate("Welcome");
   };
@@ -45,43 +41,15 @@ export default function Login() {
     setPassword(newPassword);
   };
 
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      (event) => {
-        const keyboardHeight = event.endCoordinates.height;
-        const scrollDistance = 0.5;
-
-        if (scrollViewRef.current) {
-          scrollViewRef.current.scrollTo({
-            y: keyboardHeight * scrollDistance,
-            animated: true,
-          });
-        }
-      }
-    );
-
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      () => {
-        if (scrollViewRef.current) {
-          scrollViewRef.current.scrollTo({ y: 0, animated: true });
-        }
-      }
-    );
-
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, []);
-
   return (
     <ScrollView
       ref={scrollViewRef}
       contentContainerStyle={styles.container}
       keyboardShouldPersistTaps="handled"
     >
+      <TouchableOpacity onPress={handlePressBack} style={styles.containerLink}>
+        <Text style={styles.link}>voltar</Text>
+      </TouchableOpacity>
       <View style={styles.containerImage}>
         <Image source={Logo} style={styles.image} />
       </View>
@@ -122,13 +90,10 @@ export default function Login() {
       </TouchableOpacity>
 
       <View style={styles.viewBtn}>
-        <TouchableOpacity style={styles.btn} onPress={handlePressHome}>
+        <TouchableOpacity style={styles.btn}>
           <Text style={styles.btnText}>ENTRAR</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={handlePressBack} style={styles.containerLink}>
-        <Text style={styles.link}>voltar</Text>
-      </TouchableOpacity>
     </ScrollView>
   );
 }

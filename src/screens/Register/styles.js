@@ -20,40 +20,64 @@ export const styles = StyleSheet.create({
     height: "100%",
     resizeMode: "contain",
   },
-  containerText: {
-    marginVertical: 16,
+  title: {
+    color: Colors.text,
+    fontSize: 36,
+    textAlign: "center",
+    fontWeight: "bold",
   },
   text: {
-    marginVertical: 16,
+    marginVertical: 8,
     color: Colors.text,
     fontSize: 24,
-    textAlign: "center",
   },
-  containerBtn: {
-    marginTop: 92,
-  },
-  btnLogin: {
+  inputs: {
     width: "16rem",
+    height: 45,
+    backgroundColor: Colors.secondary,
+    borderRadius: 16,
+    borderColor: Colors.primary,
+    borderWidth: 4,
+    paddingStart: 15,
+    color: Colors.background,
+    fontWeight: "800",
+    fontSize: 20,
+  },
+  viewBtn: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 24,
+  },
+  btn: {
+    width: 228,
     height: 68,
-    marginVertical: 16,
+
     backgroundColor: Colors.primary,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 16,
   },
-  btnRegister: {
-    width: "16rem",
-    height: 68,
-    marginVertical: 16,
-    backgroundColor: Colors.secondaryOpacity65,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 16,
-    opacity: "05",
-  },
+
   btnText: {
     fontSize: 24,
     color: Colors.text,
     fontWeight: "bold",
+  },
+  inputPassword: {
+    flexDirection: "row",
+  },
+  iconEye: {
+    zIndex: 9,
+    margin: 0,
+    bottom: 33,
+    left: 300,
+  },
+  containerLink: {
+    alignItems: "center",
+  },
+  link: {
+    marginVertical: 8,
+    color: Colors.text,
+    fontSize: 20,
   },
 });

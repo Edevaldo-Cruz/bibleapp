@@ -10,39 +10,21 @@ import {
   TextInput,
 } from "react-native";
 import Logo from "../../assets/logo.png";
-import { Feather } from "@expo/vector-icons";
 
 import { styles } from "./styles";
 
-export default function Login() {
-  const [hidePassword, setHidePassword] = useState(true);
+export default function RecoverPassword() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const navigation = useNavigation();
 
   const scrollViewRef = useRef(null);
-  const togglePasswordVisibility = () => {
-    setHidePassword(!hidePassword);
-  };
-
-  const handlePressHome = () => {
-    navigation.navigate("Home");
-  };
 
   const handlePressBack = () => {
     navigation.navigate("Welcome");
   };
 
-  const handlePressPassword = () => {
-    navigation.navigate("RecoverPassword");
-  };
-
   const onChangeEmail = (newEmail) => {
     setEmail(newEmail);
-  };
-
-  const onChangePassword = (newPassword) => {
-    setPassword(newPassword);
   };
 
   useEffect(() => {
@@ -85,50 +67,34 @@ export default function Login() {
       <View style={styles.containerImage}>
         <Image source={Logo} style={styles.image} />
       </View>
-      <Text style={styles.title}>LOGIN</Text>
+      <Text style={styles.title}>ESQUECEU SUA SENHA?</Text>
+      <Text style={styles.text}>
+        Não se preocupe! Acontece. Por favor, insira o endereço de e-mail
+        vinculado à sua conta
+      </Text>
 
-      <View style={styles.containerInputs}>
-        <Text style={styles.text}>Email</Text>
+      <View style={styles.containerInput}>
+        <Text style={styles.label}>Email</Text>
         <TextInput
           style={styles.inputs}
           onChangeText={onChangeEmail}
           value={email}
         />
-        <Text style={styles.text}>Senha</Text>
-        <TextInput
-          style={styles.inputs}
-          onChangeText={onChangePassword}
-          value={password}
-          secureTextEntry={hidePassword}
-        />
+      </View>
+
+      <View>
+        <View style={styles.viewBtn}>
+          <TouchableOpacity style={styles.btn}>
+            <Text style={styles.btnText}>ENTRAR</Text>
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity
-          style={styles.iconEye}
-          onPress={togglePasswordVisibility}
+          onPress={handlePressBack}
+          style={styles.containerLink}
         >
-          <Feather
-            name={hidePassword ? "eye-off" : "eye"}
-            size={20}
-            color="#334F59"
-            onPress={togglePasswordVisibility}
-          />
+          <Text style={styles.link}>voltar</Text>
         </TouchableOpacity>
       </View>
-
-      <TouchableOpacity
-        onPress={handlePressPassword}
-        style={styles.containerLinkRecover}
-      >
-        <Text style={styles.linkRecover}>Esqueci minha senha</Text>
-      </TouchableOpacity>
-
-      <View style={styles.viewBtn}>
-        <TouchableOpacity style={styles.btn} onPress={handlePressHome}>
-          <Text style={styles.btnText}>ENTRAR</Text>
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity onPress={handlePressBack} style={styles.containerLink}>
-        <Text style={styles.link}>voltar</Text>
-      </TouchableOpacity>
     </ScrollView>
   );
 }

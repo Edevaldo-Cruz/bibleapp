@@ -1,6 +1,6 @@
 import React from "react";
-import Welcome from "./src/screens/Welcome";
+import AppRoutes from "./src/routes/AppRoutes";
 
 export default function App() {
-  return <Welcome />;
+  return <AppRoutes />;
 }

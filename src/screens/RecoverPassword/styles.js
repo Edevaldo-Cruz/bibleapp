@@ -27,14 +27,18 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   text: {
-    marginVertical: 8,
+    textAlign: "center",
+    marginVertical: 24,
     color: Colors.text,
-    fontSize: 24,
+    fontSize: 20,
   },
-  containerInputs: {
-    marginBottom: 0,
-    paddingBottom: 0,
-    height: 190,
+  label: {
+    marginVertical: 0,
+    color: Colors.text,
+    fontSize: 20,
+  },
+  containerInput: {
+    marginVertical: 28,
   },
   inputs: {
     width: "16rem",
@@ -51,7 +55,7 @@ export const styles = StyleSheet.create({
   viewBtn: {
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 24,
+    marginVertical: 28,
   },
   btn: {
     width: 228,
@@ -62,14 +66,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 16,
   },
-  containerLinkRecover: {
-    margin: 0,
-  },
-  linkRecover: {
-    marginVertical: 8,
-    color: Colors.text,
-    fontSize: 20,
-  },
+
   btnText: {
     fontSize: 24,
     color: Colors.text,
