@@ -9,44 +9,40 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.background,
     alignContent: "center",
   },
-  containerImage: {
-    width: "100%",
-    height: "25%",
+  containerHeader: {
+    width: 200,
+    height: "4%",
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    justifyContent: "center",
+    marginVertical: 8,
   },
   image: {
-    width: "100%",
+    width: "25%",
     height: "100%",
     resizeMode: "contain",
-  },
-  title: {
-    color: Colors.text,
-    fontSize: 36,
-    textAlign: "center",
-    fontWeight: "bold",
+    margin: 0,
+    right: 10,
   },
   text: {
     marginVertical: 8,
     color: Colors.text,
     fontSize: 24,
+    textAlign: "center",
+    fontWeight: "400",
   },
-  containerInputs: {
-    marginBottom: 0,
-    paddingBottom: 0,
-    height: 190,
-  },
-  inputs: {
-    width: "16rem",
+  input: {
+    width: 240,
     height: 45,
     backgroundColor: Colors.secondary,
-    borderRadius: 16,
+    borderRadius: 32,
     borderColor: Colors.primary,
     borderWidth: 4,
     paddingStart: 15,
     color: Colors.background,
     fontWeight: "800",
     fontSize: 20,
+    right: 10,
   },
   viewBtn: {
     justifyContent: "center",
@@ -54,42 +50,66 @@ export const styles = StyleSheet.create({
     marginVertical: 24,
   },
   btn: {
-    width: 228,
     height: 68,
-
+    paddingHorizontal: 32,
     backgroundColor: Colors.primary,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 16,
-  },
-  containerLinkRecover: {
-    margin: 0,
-  },
-  linkRecover: {
-    marginVertical: 8,
-    color: Colors.text,
-    fontSize: 20,
   },
   btnText: {
     fontSize: 24,
     color: Colors.text,
     fontWeight: "bold",
   },
-  inputPassword: {
+  title: {
+    textAlign: "center",
+    color: Colors.text,
+    fontSize: 36,
+    fontWeight: "bold",
+  },
+  containerBtnBible: {
+    marginBottom: 16,
+  },
+  containerBtn: {
     flexDirection: "row",
   },
-  iconEye: {
-    zIndex: 9,
-    margin: 0,
-    bottom: 33,
-    left: 300,
-  },
-  containerLink: {
+  btnDeactivated: {
+    width: 163,
+    height: 119,
     alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.secondaryOpacity65,
+    borderRadius: 16,
+    borderColor: Colors.primary,
+    borderWidth: 4,
+    marginHorizontal: 4,
   },
-  link: {
-    marginVertical: 8,
+  textDeactivated: {
+    color: Colors.background,
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  btnActivated: {
+    width: 163,
+    height: 119,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.primary,
+    borderRadius: 16,
+    borderColor: Colors.text,
+    borderWidth: 4,
+    marginHorizontal: 4,
+  },
+  textActivated: {
     color: Colors.text,
-    fontSize: 20,
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  titleDinamic: {
+    textAlign: "center",
+    color: Colors.text,
+    fontSize: 24,
+    fontWeight: "bold",
   },
 });
