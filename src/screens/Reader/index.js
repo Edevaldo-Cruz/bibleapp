@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { FlatList, View, Text, TouchableOpacity } from "react-native";
+import { FlatList, View, Text, TouchableOpacity, Modal } from "react-native";
 import { useRoute } from "@react-navigation/native";
+
 import { AntDesign } from "@expo/vector-icons";
 
 import { data } from "../../content/data";
@@ -20,9 +21,31 @@ export default function Reader() {
   const [currentChapter, setCurrentChapter] = useState(chapter);
   const [currentBook, setCurrentBook] = useState(book);
   const [currentAbbrev, setCurrentAbbrev] = useState(abbrev);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const timeoutRef = useRef(null);
+
+  const handlePressIn = (item) => {
+    timeoutRef.current = setTimeout(() => {
+      setSelectedItem(item);
+      setShowModal(true);
+    }, 500);
+  };
+
+  const handlePressOut = () => {
+    clearTimeout(timeoutRef.current);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   const handleGoBack = () => {
     navigation.goBack();
+  };
+
+  const handlePressAnnotation = () => {
+    navigation.navigate("Annotation");
   };
 
   // async function getVerses() {
@@ -54,11 +77,13 @@ export default function Reader() {
 
   const nextChapter = () => {
     let position = getPosition();
+    let nextPosition = position + 1;
+
     if (currentChapter + 1 <= data[position].chapters) {
       setCurrentChapter(currentChapter + 1);
     } else if (currentAbbrev != "ap") {
-      setCurrentBook(data[position + 1].name);
-      setCurrentAbbrev(data[position + 1].abbrev.pt);
+      setCurrentBook(data[nextPosition].name);
+      setCurrentAbbrev(data[nextPosition].abbrev.pt);
       setCurrentChapter(1);
     }
   };
@@ -99,37 +124,72 @@ export default function Reader() {
               </TouchableOpacity>
             </View>
             <View style={styles.containerBookChapter}>
-              <Text style={styles.textBook}>{currentBook}</Text>
+              <Text style={styles.nameBook}>{currentBook}</Text>
               <Text style={styles.numberChapter}>{currentChapter}</Text>
             </View>
           </>
         }
         renderItem={({ item }) => (
-          <View style={styles.verseContainer}>
+          <TouchableOpacity
+            style={styles.verseContainer}
+            onPressIn={() => handlePressIn(item)}
+            onPressOut={handlePressOut}
+          >
             <Text style={styles.verseText}>
               {item.number} {item.text}
             </Text>
-          </View>
+          </TouchableOpacity>
         )}
       />
-      <View style={styles.fixedView}>
-        <View style={styles.line} />
-        <View style={styles.containerFooter}>
-          <View style={styles.containerBtnFooter}>
-            <TouchableOpacity onPress={previousChapter}>
-              <AntDesign name="arrowleft" size={38} color="#FFF" />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text style={styles.buttonText}>
-                {currentBook} {currentChapter}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={nextChapter}>
-              <AntDesign name="arrowright" size={38} color="#FFF" />
-            </TouchableOpacity>
+      <>
+        <View style={styles.fixedView}>
+          <View style={styles.line} />
+          <View style={styles.containerFooter}>
+            <View style={styles.containerBtnFooter}>
+              <TouchableOpacity onPress={previousChapter}>
+                <AntDesign name="arrowleft" size={38} color="#FFF" />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Text style={styles.buttonText}>
+                  {currentBook} {currentChapter}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={nextChapter}>
+                <AntDesign name="arrowright" size={38} color="#FFF" />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
+        <Modal visible={showModal} animationType="slide" transparent={true}>
+          <View style={styles.modalBackground}>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContainerHeader}>
+                <Text style={styles.modalTitle}>Criar anotação?</Text>
+                <View style={styles.closeButton}>
+                  <TouchableOpacity onPress={closeModal}>
+                    <AntDesign name="closecircleo" size={24} color="#334F59" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              {selectedItem && (
+                <View style={styles.modalContent}>
+                  <Text style={styles.modalText}>
+                    {selectedItem.number} {selectedItem.text}
+                  </Text>
+                  <View style={styles.containerBtnAnnotation}>
+                    <TouchableOpacity
+                      style={styles.btnAnnotation}
+                      onPress={handlePressAnnotation}
+                    >
+                      <Text style={styles.modalBtnText}>Criar Anotação</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              )}
+            </View>
+          </View>
+        </Modal>
+      </>
     </View>
   );
 }

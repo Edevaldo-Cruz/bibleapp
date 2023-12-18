@@ -8,16 +8,19 @@ import {
   View,
   Image,
   TextInput,
+  Alert,
 } from "react-native";
 import Logo from "../../assets/logo.png";
 import { Feather } from "@expo/vector-icons";
 
 import { styles } from "./styles";
+import { authenticateUser } from "../../services/BibleApi/requests";
+import { savesUserInformation, getAllUsers } from "../../services/SQLite/user";
 
 export default function Login() {
   const [hidePassword, setHidePassword] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("edevaldo_cruz@hotmail.com");
+  const [password, setPassword] = useState("senhaTeste");
   const navigation = useNavigation();
 
   const scrollViewRef = useRef(null);
@@ -44,6 +47,31 @@ export default function Login() {
   const onChangePassword = (newPassword) => {
     setPassword(newPassword);
   };
+
+  async function getToken() {
+    try {
+      const result = await authenticateUser(email, password);
+      if (result) {
+        navigation.navigate("Home");
+        await savesUserInformation(result);
+        fetchUsers();
+      } else {
+        Alert.alert("Email ou senha incorreta.");
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Erro ao obter token.");
+    }
+  }
+
+  async function fetchUsers() {
+    try {
+      const users = await getAllUsers();
+      console.log(users);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -122,7 +150,11 @@ export default function Login() {
       </TouchableOpacity>
 
       <View style={styles.viewBtn}>
-        <TouchableOpacity style={styles.btn} onPress={handlePressHome}>
+        <TouchableOpacity
+          style={styles.btn}
+          //onPress={handlePressHome}
+          onPress={getToken}
+        >
           <Text style={styles.btnText}>ENTRAR</Text>
         </TouchableOpacity>
       </View>

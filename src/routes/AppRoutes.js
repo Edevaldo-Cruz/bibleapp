@@ -8,6 +8,7 @@ import Register from "../screens/Register";
 import RecoverPassword from "../screens/RecoverPassword";
 import Home from "../screens/Home";
 import Reader from "../screens/Reader";
+import Annotation from "../screens/Annotation";
 
 const Stack = createStackNavigator();
 
@@ -43,6 +44,11 @@ export default function AppRoutes() {
         <Stack.Screen
           name="Reader"
           component={Reader}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Annotation"
+          component={Annotation}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

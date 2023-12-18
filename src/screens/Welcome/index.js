@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Text, TouchableOpacity, View, Image } from "react-native";
 import Logo from "../../assets/logo.png";
 
 import { styles } from "./styles";
+import { createTableUser, getAllUsers } from "../../services/SQLite/user";
 
 export default function Welcome() {
   const navigation = useNavigation();
@@ -15,6 +16,26 @@ export default function Welcome() {
   const handlePressRegister = () => {
     navigation.navigate("Register");
   };
+
+  useEffect(() => {
+    createTableUser();
+  }, []);
+
+  useEffect(() => {
+    async function fetchUsers() {
+      try {
+        const users = await getAllUsers();
+        console.log(users);
+
+        if (users && users.length > 0) {
+          navigation.navigate("Home");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchUsers();
+  }, [navigation]);
 
   return (
     <View style={styles.container}>

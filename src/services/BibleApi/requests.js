@@ -23,3 +23,19 @@ export async function getChapterWithToken(version, abbrev, chapter, token) {
     return {};
   }
 }
+
+export async function authenticateUser(email, password) {
+  try {
+    const result = await api.put(`users/token`, {
+      email: email,
+      password: password,
+    });
+    if (result.status === 200) {
+      return result.data;
+    } else {
+      throw new Error("Falha ao fazer login");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
