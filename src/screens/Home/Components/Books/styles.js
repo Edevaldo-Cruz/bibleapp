@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     paddingBottom: 100,
+    paddingHorizontal: 25,
   },
   btn: {
     width: "100%",
@@ -20,6 +21,7 @@ export const styles = StyleSheet.create({
   containerChapter: {
     flexDirection: "row",
     flexWrap: "wrap",
+    marginBottom: 16,
   },
   btnChapter: {
     width: 50,

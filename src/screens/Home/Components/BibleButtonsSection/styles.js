@@ -2,14 +2,15 @@ import { StyleSheet } from "react-native";
 import Colors from "../../../../constants/Colors";
 
 export const styles = StyleSheet.create({
+  containerBtnBible: {
+    marginBottom: 16,
+    marginHorizontal: 25,
+  },
   title: {
     textAlign: "center",
     color: Colors.text,
     fontSize: 36,
     fontWeight: "bold",
-  },
-  containerBtnBible: {
-    marginBottom: 16,
   },
   containerBtn: {
     flexDirection: "row",

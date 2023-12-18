@@ -3,12 +3,13 @@ import Colors from "../../../../constants/Colors";
 
 export const styles = StyleSheet.create({
   containerHeader: {
-    width: "100%",
+    // width: "100%",
     height: 45,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 38,
+    marginTop: 15,
+    marginHorizontal: 25,
   },
   image: {
     width: 53,

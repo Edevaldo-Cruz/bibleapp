@@ -20,13 +20,14 @@ export default function LatestReadings() {
       <FlatList
         data={repo}
         style={styles.flat}
+        contentContainerStyle={{ paddingRight: 50 }}
         keyExtractor={(repo, index) => index.toString()}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.btn}
-            //onPress={() => navigation.navigate("InfoRepositorio", { item })}
+            //onPress={() => navigation.navigate("", { item })}
           >
             <Text style={styles.text}>
               {item.book}.{item.chapter}
