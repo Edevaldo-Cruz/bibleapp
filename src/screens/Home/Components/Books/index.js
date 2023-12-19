@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { data } from "../../../../content/data";
 import { styles } from "./styles";
 
-export default function Books({ receivedData: filter }) {
+export default function Books({ receivedData: filter, token, id }) {
   const [expandedItem, setExpandedItem] = useState(null);
   const navigation = useNavigation();
 
@@ -20,6 +20,8 @@ export default function Books({ receivedData: filter }) {
       book: bookName,
       abbrev: abbrev,
       chapter: chapterNumber,
+      token: token,
+      id: id,
     });
   };
 

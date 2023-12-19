@@ -1,6 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { FlatList, View, Text, TouchableOpacity, Modal } from "react-native";
+import {
+  FlatList,
+  View,
+  Text,
+  TouchableOpacity,
+  Modal,
+  Alert,
+} from "react-native";
 import { useRoute } from "@react-navigation/native";
 
 import { AntDesign } from "@expo/vector-icons";
@@ -11,11 +18,15 @@ import {
   getChapter,
   getChapterWithToken,
 } from "../../services/BibleApi/requests";
+import {
+  createLatestReadings,
+  getAllLatestReadings,
+} from "../../services/SQLite/latestReadings";
 
 export default function Reader() {
   const route = useRoute();
   const navigation = useNavigation();
-  const { book, abbrev, chapter } = route.params;
+  const { book, abbrev, chapter, token, id } = route.params;
 
   const [verses, setVerses] = useState([]);
   const [currentChapter, setCurrentChapter] = useState(chapter);
@@ -48,6 +59,7 @@ export default function Reader() {
     navigation.navigate("Annotation");
   };
 
+  //TODO: para usuario que optarem por não fazer o registro.
   // async function getVerses() {
   //   const result = await getChapter("nvi", currentAbbrev, currentChapter);
   //   if (result && result.data && result.data.verses) {
@@ -55,18 +67,31 @@ export default function Reader() {
   //   }
   // }
 
-  var token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1biBEZWMgMTcgMjAyMyAyMzozOToxNyBHTVQrMDAwMC42NTNkMjM0N2MyYWM3YjAwMjlkY2Y4MzciLCJpYXQiOjE3MDI4NTYzNTd9.Tl3YjvxQVqTXiE8B5KKbqscyqI3FaOTNGDPB-chHB5M";
-
   async function getVerses() {
-    const result = await getChapterWithToken(
-      "nvi",
-      currentAbbrev,
-      currentChapter,
-      token
-    );
-    if (result && result.data && result.data.verses) {
-      setVerses(result.data.verses);
+    try {
+      const result = await getChapterWithToken(
+        "nvi",
+        currentAbbrev,
+        currentChapter,
+        token
+      );
+      if (result && result.data && result.data.verses) {
+        setVerses(result.data.verses);
+        let latestReadings = {
+          abbrev: currentAbbrev,
+          chapter: currentChapter,
+          idUser: id,
+          inclusionDate: Date.now(),
+        };
+        await createLatestReadings(latestReadings);
+
+        //remover
+        var list = await getAllLatestReadings(id);
+        console.log(list);
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Erro ao obter informação.");
     }
   }
 

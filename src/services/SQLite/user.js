@@ -51,3 +51,24 @@ export async function getAllUsers() {
     });
   });
 }
+
+export async function getUser() {
+  return new Promise((resolve, reject) => {
+    db.transaction((transaction) => {
+      transaction.executeSql(
+        "SELECT * FROM user ORDER BY id DESC LIMIT 1;",
+        [],
+        (_, result) => {
+          if (result.rows && result.rows._array) {
+            resolve(result.rows._array);
+          } else {
+            reject(new Error("Dados não encontrados."));
+          }
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+}

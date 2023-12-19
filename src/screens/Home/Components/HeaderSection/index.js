@@ -1,10 +1,11 @@
+import React from "react";
 import { View, Image, TextInput, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from "./styles";
 
 import Logo from "../../../../assets/logo.png";
 
-export default function HeaderSection() {
+export default function HeaderSection({ nameUser }) {
   return (
     <>
       <View style={styles.containerHeader}>
@@ -12,7 +13,10 @@ export default function HeaderSection() {
         <TextInput style={styles.input} />
         <Ionicons name="settings-sharp" size={32} color="#99B8C4" />
       </View>
-      <Text style={styles.text}>Seja bem-vindo(a){`\n`}Rosana!</Text>
+      <Text style={styles.text}>
+        Seja bem-vindo(a){`\n`}
+        {nameUser}!
+      </Text>
       <View style={styles.viewBtn}>
         <TouchableOpacity style={styles.btn}>
           <Text style={styles.btnText}>MINHA ANOTAÇÕES</Text>

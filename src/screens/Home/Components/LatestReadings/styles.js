@@ -33,5 +33,6 @@ export const styles = StyleSheet.create({
     color: Colors.text,
     fontWeight: "bold",
     fontSize: 20,
+    textTransform: "uppercase",
   },
 });

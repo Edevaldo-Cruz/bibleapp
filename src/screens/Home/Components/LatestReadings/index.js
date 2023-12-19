@@ -1,17 +1,23 @@
 import { FlatList, Text, View, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
+import { useEffect, useState } from "react";
+import { getAllLatestReadings } from "../../../../services/SQLite/latestReadings";
 
-const repo = [
-  { book: "Gn", chapter: 50 },
-  { book: "Ex", chapter: 40 },
-  { book: "Lv", chapter: 27 },
-  { book: "Nm", chapter: 36 },
-  { book: "Dt", chapter: 34 },
-  { book: "Js", chapter: 24 },
-  { book: "Jz", chapter: 21 },
-];
+export default function LatestReadings({ id: idUser }) {
+  const [repo, setRepo] = useState();
 
-export default function LatestReadings() {
+  async function getlatestReadings() {
+    try {
+      setRepo(await getAllLatestReadings(idUser));
+    } catch {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    getlatestReadings();
+  }, [repo]);
+
   return (
     <>
       <View>
@@ -30,7 +36,7 @@ export default function LatestReadings() {
             //onPress={() => navigation.navigate("", { item })}
           >
             <Text style={styles.text}>
-              {item.book}.{item.chapter}
+              {item.abbrev}.{item.chapter}
             </Text>
           </TouchableOpacity>
         )}

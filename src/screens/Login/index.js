@@ -64,14 +64,14 @@ export default function Login() {
     }
   }
 
-  async function fetchUsers() {
-    try {
-      const users = await getAllUsers();
-      console.log(users);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  // async function fetchUsers() {
+  //   try {
+  //     const users = await getAllUsers();
+  //     console.log(users);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
