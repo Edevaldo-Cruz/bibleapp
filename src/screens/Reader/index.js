@@ -22,12 +22,14 @@ import {
   createLatestReadings,
   getAllLatestReadings,
 } from "../../services/SQLite/latestReadings";
+import Load from "../../components/Load";
 
 export default function Reader() {
   const route = useRoute();
   const navigation = useNavigation();
   const { book, abbrev, chapter, token, id } = route.params;
 
+  const [versesLoaded, setVersesLoaded] = useState(false);
   const [verses, setVerses] = useState([]);
   const [currentChapter, setCurrentChapter] = useState(chapter);
   const [currentBook, setCurrentBook] = useState(book);
@@ -92,6 +94,8 @@ export default function Reader() {
     } catch (error) {
       console.error(error);
       Alert.alert("Erro ao obter informação.");
+    } finally {
+      setVersesLoaded(true);
     }
   }
 
@@ -129,6 +133,16 @@ export default function Reader() {
   useEffect(() => {
     getVerses();
   }, [currentChapter]);
+
+  useEffect(() => {
+    if (verses.length > 0) {
+      setVersesLoaded(true);
+    }
+  }, [verses]);
+
+  if (!versesLoaded) {
+    return <Load />;
+  }
 
   return (
     <View style={{ flex: 1 }}>

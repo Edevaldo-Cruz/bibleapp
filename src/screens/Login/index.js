@@ -52,9 +52,8 @@ export default function Login() {
     try {
       const result = await authenticateUser(email, password);
       if (result) {
-        navigation.navigate("Home");
         await savesUserInformation(result);
-        fetchUsers();
+        navigation.navigate("Home");
       } else {
         Alert.alert("Email ou senha incorreta.");
       }

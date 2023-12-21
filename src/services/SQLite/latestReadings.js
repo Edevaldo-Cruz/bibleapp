@@ -5,7 +5,7 @@ export function createTableLatestReadings() {
     transaction.executeSql(
       "CREATE TABLE IF NOT EXISTS " +
         "latestReadings " +
-        "(id INTEGER PRIMARY KEY AUTOINCREMENT, abbrev TEXT, chapter INTEGER, idUser INTEGER, inclusionDate DATETIME," +
+        "(id INTEGER PRIMARY KEY AUTOINCREMENT, book TEXT, abbrev TEXT, chapter INTEGER, idUser INTEGER, inclusionDate DATETIME," +
         "FOREIGN KEY (idUser) REFERENCES user(id)" +
         ");"
     );
@@ -16,18 +16,40 @@ export async function createLatestReadings(latestReadings) {
   return new Promise((resolve, reject) => {
     db.transaction((transaction) => {
       transaction.executeSql(
-        "INSERT INTO latestReadings (abbrev, chapter, idUser, inclusionDate) VALUES (?, ?, ?, ?);",
-        [
-          latestReadings.abbrev,
-          latestReadings.chapter,
-          latestReadings.idUser,
-          latestReadings.inclusionDate,
-        ],
+        "SELECT * FROM latestReadings ORDER BY inclusionDate DESC LIMIT 1;",
+        [],
         (_, result) => {
-          if (result.rowsAffected > 0) {
-            resolve("Ok");
-          } else {
-            reject(new Error("Erro ao salvar informações de leitura."));
+          if (result.rows.length > 0) {
+            const lastSavedItem = result.rows.item(0);
+            if (
+              lastSavedItem.book === latestReadings.book &&
+              lastSavedItem.abbrev === latestReadings.abbrev &&
+              lastSavedItem.chapter === latestReadings.chapter &&
+              lastSavedItem.idUser === latestReadings.idUser
+            ) {
+              resolve("Não salvo: O último item é igual ao item atual.");
+            } else {
+              transaction.executeSql(
+                "INSERT INTO latestReadings (book, abbrev, chapter, idUser, inclusionDate) VALUES (?, ?, ?, ?, ?);",
+                [
+                  latestReadings.book,
+                  latestReadings.abbrev,
+                  latestReadings.chapter,
+                  latestReadings.idUser,
+                  latestReadings.inclusionDate,
+                ],
+                (_, result) => {
+                  if (result.rowsAffected > 0) {
+                    resolve("Ok");
+                  } else {
+                    reject(new Error("Erro ao salvar informações de leitura."));
+                  }
+                },
+                (_, error) => {
+                  reject(error);
+                }
+              );
+            }
           }
         },
         (_, error) => {

@@ -8,16 +8,22 @@ import BibleButtonsSection from "./Components/BibleButtonsSection";
 import Books from "./Components/Books";
 
 import { getUser } from "../../services/SQLite/user";
+import Load from "../../components/Load";
 
 export default function Home() {
   const [filter, setFilter] = useState("VT");
   const [nameUser, setNameUser] = useState("");
   const [token, setToken] = useState("");
   const [id, setId] = useState();
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [book, setBook] = useState("");
 
   const sections = [
     { key: "header", component: <HeaderSection nameUser={nameUser} /> },
-    { key: "latestReadings", component: <LatestReadings id={id} /> },
+    {
+      key: "latestReadings",
+      component: <LatestReadings receivedData={filter} token={token} id={id} />,
+    },
     {
       key: "bibleButtons",
       component: (
@@ -42,15 +48,22 @@ export default function Home() {
           setNameUser(name);
           setToken(token);
           setId(id);
+          setDataLoaded(true);
         } else {
           console.log("Nenhum usuário encontrado");
+          setDataLoaded(true);
         }
       } catch (error) {
         console.error(error);
+        setDataLoaded(true);
       }
     }
     fetchUsers();
   }, []);
+
+  if (!dataLoaded) {
+    return <Load />;
+  }
 
   return (
     <FlatList

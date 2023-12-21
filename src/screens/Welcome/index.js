@@ -1,12 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Text, TouchableOpacity, View, Image } from "react-native";
 import Logo from "../../assets/logo.png";
 
 import { styles } from "./styles";
 import { getUser } from "../../services/SQLite/user";
+import Load from "../../components/Load";
 
 export default function Welcome() {
+  const [loaded, setLoaded] = useState(false);
+  const [userExists, setUserExists] = useState(false);
   const navigation = useNavigation();
 
   const handlePressLogin = () => {
@@ -21,17 +24,29 @@ export default function Welcome() {
     async function fetchUsers() {
       try {
         const user = await getUser();
+
         console.log(user);
 
         if (user && user.length > 0) {
-          navigation.navigate("Home");
+          setUserExists(true);
         }
+        setLoaded(true);
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     }
     fetchUsers();
-  }, [navigation]);
+  }, []);
+
+  useEffect(() => {
+    if (loaded && userExists) {
+      navigation.navigate("Home");
+    }
+  }, [loaded, userExists, navigation]);
+
+  if (!loaded) {
+    return <Load />;
+  }
 
   return (
     <View style={styles.container}>
