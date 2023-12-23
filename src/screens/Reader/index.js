@@ -33,6 +33,7 @@ export default function Reader() {
   const [verses, setVerses] = useState([]);
   const [currentChapter, setCurrentChapter] = useState(chapter);
   const [currentBook, setCurrentBook] = useState(book);
+  const [lastBook, setLastBook] = useState("");
   const [currentAbbrev, setCurrentAbbrev] = useState(abbrev);
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -80,27 +81,25 @@ export default function Reader() {
       if (result && result.data && result.data.verses) {
         setVerses(result.data.verses);
         let latestReadings = {
+          book: book,
           abbrev: currentAbbrev,
           chapter: currentChapter,
           idUser: id,
           inclusionDate: Date.now(),
         };
         await createLatestReadings(latestReadings);
-
-        //remover
-        var list = await getAllLatestReadings(id);
-        console.log(list);
+        setLastBook(result.data.book.name);
       }
     } catch (error) {
       console.error(error);
       Alert.alert("Erro ao obter informação.");
-    } finally {
-      setVersesLoaded(true);
     }
   }
 
   const getPosition = () => {
-    const index = data.findIndex((item) => item.name === currentBook);
+    const index = data.findIndex((item) =>
+      (item.name === lastBook) !== "" ? lastBook : currentBook
+    );
     return index !== -1 ? index : null;
   };
 
@@ -111,7 +110,7 @@ export default function Reader() {
     if (currentChapter + 1 <= data[position].chapters) {
       setCurrentChapter(currentChapter + 1);
     } else if (currentAbbrev != "ap") {
-      setCurrentBook(data[nextPosition].name);
+      setCurrentBook(!lastBook ? data[nextPosition].name : lastBook);
       setCurrentAbbrev(data[nextPosition].abbrev.pt);
       setCurrentChapter(1);
     }
@@ -163,7 +162,9 @@ export default function Reader() {
               </TouchableOpacity>
             </View>
             <View style={styles.containerBookChapter}>
-              <Text style={styles.nameBook}>{currentBook}</Text>
+              <Text style={styles.nameBook}>
+                {lastBook !== "" ? lastBook : currentBook}
+              </Text>
               <Text style={styles.numberChapter}>{currentChapter}</Text>
             </View>
           </>
@@ -181,24 +182,31 @@ export default function Reader() {
         )}
       />
       <>
-        <View style={styles.fixedView}>
-          <View style={styles.line} />
-          <View style={styles.containerFooter}>
-            <View style={styles.containerBtnFooter}>
-              <TouchableOpacity onPress={previousChapter}>
-                <AntDesign name="arrowleft" size={38} color="#FFF" />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Text style={styles.buttonText}>
-                  {currentBook} {currentChapter}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={nextChapter}>
-                <AntDesign name="arrowright" size={38} color="#FFF" />
-              </TouchableOpacity>
+        {!lastBook ? (
+          <View style={styles.fixedView}>
+            <View style={styles.line} />
+            <View style={styles.containerFooter}>
+              <View style={styles.containerBtnFooter}>
+                <TouchableOpacity onPress={previousChapter}>
+                  <AntDesign name="arrowleft" size={38} color="#FFF" />
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                  <Text style={styles.buttonText}>
+                    {lastBook !== "" ? lastBook : currentBook} {currentChapter}
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={nextChapter}>
+                  <AntDesign name="arrowright" size={38} color="#FFF" />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
+        ) : (
+          <></>
+        )}
+
         <Modal visible={showModal} animationType="slide" transparent={true}>
           <View style={styles.modalBackground}>
             <View style={styles.modalContainer}>

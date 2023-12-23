@@ -16,18 +16,18 @@ export async function createLatestReadings(latestReadings) {
   return new Promise((resolve, reject) => {
     db.transaction((transaction) => {
       transaction.executeSql(
-        "SELECT * FROM latestReadings ORDER BY inclusionDate DESC LIMIT 1;",
+        "SELECT * FROM latestReadings WHERE id != (SELECT id FROM latestReadings ORDER BY inclusionDate DESC LIMIT 1) ORDER BY inclusionDate DESC LIMIT 1;",
         [],
         (_, result) => {
           if (result.rows.length > 0) {
             const lastSavedItem = result.rows.item(0);
             if (
-              lastSavedItem.book === latestReadings.book &&
               lastSavedItem.abbrev === latestReadings.abbrev &&
               lastSavedItem.chapter === latestReadings.chapter &&
               lastSavedItem.idUser === latestReadings.idUser
             ) {
               resolve("Não salvo: O último item é igual ao item atual.");
+              console.log("Cai aqui if do if");
             } else {
               transaction.executeSql(
                 "INSERT INTO latestReadings (book, abbrev, chapter, idUser, inclusionDate) VALUES (?, ?, ?, ?, ?);",
@@ -44,12 +44,34 @@ export async function createLatestReadings(latestReadings) {
                   } else {
                     reject(new Error("Erro ao salvar informações de leitura."));
                   }
+                  console.log("Cai aqui else do if");
                 },
                 (_, error) => {
                   reject(error);
                 }
               );
             }
+          } else {
+            transaction.executeSql(
+              "INSERT INTO latestReadings (book, abbrev, chapter, idUser, inclusionDate) VALUES (?, ?, ?, ?, ?);",
+              [
+                latestReadings.book,
+                latestReadings.abbrev,
+                latestReadings.chapter,
+                latestReadings.idUser,
+                latestReadings.inclusionDate,
+              ],
+              (_, result) => {
+                if (result.rowsAffected > 0) {
+                  resolve("Ok");
+                } else {
+                  reject(new Error("Erro ao salvar informações de leitura."));
+                }
+              },
+              (_, error) => {
+                reject(error);
+              }
+            );
           }
         },
         (_, error) => {
