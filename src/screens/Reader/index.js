@@ -1,13 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
-import {
-  FlatList,
-  View,
-  Text,
-  TouchableOpacity,
-  Modal,
-  Alert,
-} from "react-native";
+import { FlatList, View, Text, TouchableOpacity, Alert } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
 import { AntDesign } from "@expo/vector-icons";
@@ -23,6 +16,7 @@ import {
   getAllLatestReadings,
 } from "../../services/SQLite/latestReadings";
 import Load from "../../components/Load";
+import ModalFavorite from "../../components/ModalFavorite";
 
 export default function Reader() {
   const route = useRoute();
@@ -35,14 +29,14 @@ export default function Reader() {
   const [currentBook, setCurrentBook] = useState(book);
   const [lastBook, setLastBook] = useState("");
   const [currentAbbrev, setCurrentAbbrev] = useState(abbrev);
-  const [showModal, setShowModal] = useState(false);
+  const [activeModal, setActiveModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const timeoutRef = useRef(null);
 
   const handlePressIn = (item) => {
     timeoutRef.current = setTimeout(() => {
       setSelectedItem(item);
-      setShowModal(true);
+      setActiveModal(true);
     }, 500);
   };
 
@@ -50,16 +44,8 @@ export default function Reader() {
     clearTimeout(timeoutRef.current);
   };
 
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
   const handleGoBack = () => {
     navigation.goBack();
-  };
-
-  const handlePressAnnotation = () => {
-    navigation.navigate("Annotation");
   };
 
   //TODO: para usuario que optarem por não fazer o registro.
@@ -182,60 +168,32 @@ export default function Reader() {
         )}
       />
       <>
-        {!lastBook ? (
-          <View style={styles.fixedView}>
-            <View style={styles.line} />
-            <View style={styles.containerFooter}>
-              <View style={styles.containerBtnFooter}>
-                <TouchableOpacity onPress={previousChapter}>
-                  <AntDesign name="arrowleft" size={38} color="#FFF" />
-                </TouchableOpacity>
+        <View style={styles.fixedView}>
+          <View style={styles.line} />
+          <View style={styles.containerFooter}>
+            <View style={styles.containerBtnFooter}>
+              <TouchableOpacity onPress={previousChapter}>
+                <AntDesign name="arrowleft" size={38} color="#FFF" />
+              </TouchableOpacity>
 
-                <TouchableOpacity>
-                  <Text style={styles.buttonText}>
-                    {lastBook !== "" ? lastBook : currentBook} {currentChapter}
-                  </Text>
-                </TouchableOpacity>
+              <TouchableOpacity>
+                <Text style={styles.buttonText}>
+                  {lastBook !== "" ? lastBook : currentBook} {currentChapter}
+                </Text>
+              </TouchableOpacity>
 
-                <TouchableOpacity onPress={nextChapter}>
-                  <AntDesign name="arrowright" size={38} color="#FFF" />
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity onPress={nextChapter}>
+                <AntDesign name="arrowright" size={38} color="#FFF" />
+              </TouchableOpacity>
             </View>
           </View>
-        ) : (
-          <></>
-        )}
+        </View>
 
-        <Modal visible={showModal} animationType="slide" transparent={true}>
-          <View style={styles.modalBackground}>
-            <View style={styles.modalContainer}>
-              <View style={styles.modalContainerHeader}>
-                <Text style={styles.modalTitle}>Criar anotação?</Text>
-                <View style={styles.closeButton}>
-                  <TouchableOpacity onPress={closeModal}>
-                    <AntDesign name="closecircleo" size={24} color="#334F59" />
-                  </TouchableOpacity>
-                </View>
-              </View>
-              {selectedItem && (
-                <View style={styles.modalContent}>
-                  <Text style={styles.modalText}>
-                    {selectedItem.number} {selectedItem.text}
-                  </Text>
-                  <View style={styles.containerBtnAnnotation}>
-                    <TouchableOpacity
-                      style={styles.btnAnnotation}
-                      onPress={handlePressAnnotation}
-                    >
-                      <Text style={styles.modalBtnText}>Criar Anotação</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              )}
-            </View>
-          </View>
-        </Modal>
+        <ModalFavorite
+          activeModal={activeModal}
+          selectedItem={selectedItem}
+          setActiveModal={setActiveModal}
+        />
       </>
     </View>
   );
