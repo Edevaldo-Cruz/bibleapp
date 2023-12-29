@@ -40,8 +40,10 @@ export default function Reader() {
     }, 500);
   };
 
-  const handlePressOut = () => {
+  const handlePressOut = (item) => {
     clearTimeout(timeoutRef.current);
+    setSelectedItem(item);
+    setActiveModal(true);
   };
 
   const handleGoBack = () => {
@@ -159,7 +161,7 @@ export default function Reader() {
           <TouchableOpacity
             style={styles.verseContainer}
             onPressIn={() => handlePressIn(item)}
-            onPressOut={handlePressOut}
+            onPressOut={() => handlePressOut(item)}
           >
             <Text style={styles.verseText}>
               {item.number} {item.text}
