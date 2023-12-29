@@ -193,6 +193,10 @@ export default function Reader() {
           activeModal={activeModal}
           selectedItem={selectedItem}
           setActiveModal={setActiveModal}
+          book={lastBook !== "" ? lastBook : currentBook}
+          abbrev={currentAbbrev}
+          chapter={currentChapter}
+          idUser={id}
         />
       </>
     </View>

@@ -3,11 +3,19 @@ import { Modal, View, Text, TouchableOpacity, TextInput } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { styles } from "./styles";
 import Colors from "../../constants/Colors";
+import {
+  saveFavoriteVerse,
+  getAllFavoriteVerses,
+} from "../../services/SQLite/favoriteVerse";
 
 export default function ModalFavorite({
   activeModal,
   selectedItem,
   setActiveModal,
+  book,
+  abbrev,
+  chapter,
+  idUser,
 }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [annotationText, setAnnotationText] = useState("");
@@ -15,10 +23,25 @@ export default function ModalFavorite({
   const closeModal = () => {
     setActiveModal(false);
     setModalVisible(false);
+    setAnnotationText("");
   };
 
   const handlePressAnnotation = () => {
-    navigation.navigate("Annotation");
+    if (selectedItem) {
+      const verseDetails = {
+        idUser: idUser, // Substitua pelo ID do usuário real
+        verse: `${selectedItem.number} ${selectedItem.text}`,
+        annotation: annotationText,
+        book: book, // Substitua pelo nome real do livro
+        abbrev: abbrev, // Substitua pela abreviação real do livro
+        chapter: chapter, // Substitua pelo número real do capítulo
+        //inclusionDate: new Date().toISOString(),
+      };
+
+      saveFavoriteVerse(verseDetails); // Chama a função para salvar o versículo favorito
+      console.log(getAllFavoriteVerses());
+    }
+    closeModal();
   };
 
   useEffect(() => {
@@ -26,6 +49,19 @@ export default function ModalFavorite({
       setModalVisible(true);
     }
   }, [activeModal]);
+
+  useEffect(() => {
+    const fetchFavoriteVerses = async () => {
+      try {
+        const verses = await getAllFavoriteVerses();
+        console.log(verses);
+      } catch (error) {
+        console.error("Erro ao obter versículos favoritos:", error);
+      }
+    };
+
+    fetchFavoriteVerses();
+  }, []);
 
   return (
     <Modal visible={modalVisible} animationType="slide" transparent={true}>

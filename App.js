@@ -4,6 +4,7 @@ import AppRoutes from "./src/routes/AppRoutes";
 import { createTableUser } from "./src/services/SQLite/user";
 import { createTableLatestReadings } from "./src/services/SQLite/latestReadings";
 import Load from "./src/components/Load";
+import { createTableFavoriteVerse } from "./src/services/SQLite/favoriteVerse";
 
 export default function App() {
   const [tablesCreated, setTablesCreated] = useState(false);
@@ -13,6 +14,7 @@ export default function App() {
       try {
         createTableUser();
         createTableLatestReadings();
+        createTableFavoriteVerse();
         setTablesCreated(true);
       } catch (error) {
         console.error("Erro ao criar tabelas:", error);
