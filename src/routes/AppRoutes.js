@@ -9,8 +9,10 @@ import RecoverPassword from "../screens/RecoverPassword";
 import Home from "../screens/Home";
 import Reader from "../screens/Reader";
 import Annotation from "../screens/Annotation";
-import { getUser } from "../services/SQLite/user";
 import Load from "../components/Load";
+
+import { getUser } from "../services/SQLite/user";
+import Favorite from "../screens/Favorite";
 
 const Stack = createStackNavigator();
 export default function AppRoutes() {
@@ -56,6 +58,11 @@ export default function AppRoutes() {
               component={Annotation}
               options={{ headerShown: false }}
             />
+            <Stack.Screen
+              name="Favorite"
+              component={Favorite}
+              options={{ headerShown: false }}
+            />
           </>
         ) : (
           <>
@@ -94,6 +101,11 @@ export default function AppRoutes() {
             <Stack.Screen
               name="Annotation"
               component={Annotation}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Favorite"
+              component={Favorite}
               options={{ headerShown: false }}
             />
           </>

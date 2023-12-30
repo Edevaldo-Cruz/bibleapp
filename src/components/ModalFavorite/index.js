@@ -5,43 +5,57 @@ import { styles } from "./styles";
 import Colors from "../../constants/Colors";
 import {
   saveFavoriteVerse,
-  getAllFavoriteVerses,
+  getFavoriteVerseById,
+  updateFavoriteVerseAnnotation,
 } from "../../services/SQLite/favoriteVerse";
 
 export default function ModalFavorite({
   activeModal,
   selectedItem,
   setActiveModal,
+  idUser,
   book,
   abbrev,
   chapter,
-  idUser,
+  modo = "create",
+  selectedItemId,
 }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [annotationText, setAnnotationText] = useState("");
+  const [content, setContent] = useState(null);
+  const [editMode, setEditMode] = useState(false);
 
   const closeModal = () => {
     setActiveModal(false);
     setModalVisible(false);
     setAnnotationText("");
+    setEditMode(false);
   };
 
   const handlePressAnnotation = () => {
     if (selectedItem) {
       const verseDetails = {
-        idUser: idUser, // Substitua pelo ID do usuário real
+        idUser: idUser,
         verse: `${selectedItem.number} ${selectedItem.text}`,
         annotation: annotationText,
-        book: book, // Substitua pelo nome real do livro
-        abbrev: abbrev, // Substitua pela abreviação real do livro
-        chapter: chapter, // Substitua pelo número real do capítulo
-        //inclusionDate: new Date().toISOString(),
+        book: book,
+        abbrev: abbrev,
+        chapter: chapter,
       };
-
-      saveFavoriteVerse(verseDetails); // Chama a função para salvar o versículo favorito
-      console.log(getAllFavoriteVerses());
+      saveFavoriteVerse(verseDetails);
     }
     closeModal();
+  };
+
+  const handleUpdateAnnotation = () => {
+    if (content && content.id) {
+      updateFavoriteVerseAnnotation(content.id, annotationText);
+      closeModal();
+    }
+  };
+
+  const handleEditAnnotation = () => {
+    setEditMode(true);
   };
 
   useEffect(() => {
@@ -51,17 +65,18 @@ export default function ModalFavorite({
   }, [activeModal]);
 
   useEffect(() => {
-    const fetchFavoriteVerses = async () => {
-      try {
-        const verses = await getAllFavoriteVerses();
-        console.log(verses);
-      } catch (error) {
-        console.error("Erro ao obter versículos favoritos:", error);
-      }
-    };
-
-    fetchFavoriteVerses();
-  }, []);
+    if (modo === "details" && selectedItemId) {
+      const fetchFavoriteVerses = async () => {
+        try {
+          const verse = await getFavoriteVerseById(selectedItemId);
+          setContent(verse);
+        } catch (error) {
+          console.error("Erro ao obter versículo favorito:", error);
+        }
+      };
+      fetchFavoriteVerses();
+    }
+  }, [modo, selectedItemId]);
 
   return (
     <Modal visible={modalVisible} animationType="slide" transparent={true}>
@@ -79,31 +94,63 @@ export default function ModalFavorite({
               </TouchableOpacity>
             </View>
           </View>
-          {selectedItem && (
+
+          {(modo === "create" && selectedItem) ||
+          (modo === "details" && content) ? (
             <View style={styles.modalContent}>
               <Text style={styles.modalText}>
-                {selectedItem.number} {selectedItem.text}
+                {modo === "create"
+                  ? `${selectedItem.number} ${selectedItem.text}`
+                  : content.verse}
               </Text>
+
               <View style={styles.containerBtnAnnotation}>
                 <Text style={styles.textAnnotation}>Anotação:</Text>
-                <TextInput
-                  style={styles.annotationInput}
-                  placeholder="Digite sua anotação"
-                  placeholderTextColor={Colors.text}
-                  onChangeText={(text) => setAnnotationText(text)}
-                  value={annotationText}
-                  multiline
-                  numberOfLines={3}
-                />
-                <TouchableOpacity
-                  style={styles.btnAnnotation}
-                  onPress={handlePressAnnotation}
-                >
-                  <Text style={styles.modalBtnText}>Salvar</Text>
-                </TouchableOpacity>
+
+                {modo === "details" && !editMode ? (
+                  <View style={styles.annotationContainer}>
+                    <Text style={styles.annotationText}>
+                      {content.annotation}
+                    </Text>
+                  </View>
+                ) : (
+                  <TextInput
+                    style={styles.annotationInput}
+                    placeholder="Digite sua anotação"
+                    placeholderTextColor={Colors.text}
+                    onChangeText={(text) => setAnnotationText(text)}
+                    value={annotationText}
+                    multiline
+                    numberOfLines={3}
+                    editable={true}
+                  />
+                )}
+
+                {modo != "details" ? (
+                  <TouchableOpacity
+                    style={styles.btnAnnotation}
+                    onPress={handlePressAnnotation}
+                  >
+                    <Text style={styles.modalBtnText}>Salvar</Text>
+                  </TouchableOpacity>
+                ) : editMode ? (
+                  <TouchableOpacity
+                    style={styles.btnAnnotation}
+                    onPress={handleUpdateAnnotation}
+                  >
+                    <Text style={styles.modalBtnText}>Salvar anotação</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={styles.btnAnnotation}
+                    onPress={handleEditAnnotation}
+                  >
+                    <Text style={styles.modalBtnText}>Editar anotação</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
-          )}
+          ) : null}
         </View>
       </View>
     </Modal>

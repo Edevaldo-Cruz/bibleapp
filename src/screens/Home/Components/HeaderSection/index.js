@@ -2,10 +2,17 @@ import React from "react";
 import { View, Image, TextInput, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from "./styles";
+import { useNavigation } from "@react-navigation/native";
 
 import Logo from "../../../../assets/logo.png";
 
 export default function HeaderSection({ nameUser }) {
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    navigation.navigate("Favorite");
+  };
+
   return (
     <>
       <View style={styles.containerHeader}>
@@ -18,7 +25,7 @@ export default function HeaderSection({ nameUser }) {
         {nameUser}!
       </Text>
       <View style={styles.viewBtn}>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={handlePress}>
           <Text style={styles.btnText}>MINHA ANOTAÇÕES</Text>
         </TouchableOpacity>
       </View>

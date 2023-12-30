@@ -56,7 +56,7 @@ export const styles = StyleSheet.create({
     height: 50,
     backgroundColor: Colors.primary,
     paddingHorizontal: 10,
-    borderRadius: 16,
+    borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -89,5 +89,18 @@ export const styles = StyleSheet.create({
     color: Colors.text,
     fontWeight: "800",
     paddingTop: 10,
+  },
+  annotationContainer: {
+    width: "100%",
+    paddingVertical: 16,
+    paddingHorizontal: 8,
+    marginVertical: 16,
+    backgroundColor: "rgba(128, 128, 128, 0.5)",
+    borderRadius: 8,
+  },
+  annotationText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: Colors.background,
   },
 });

@@ -49,15 +49,55 @@ export function getAllFavoriteVerses() {
 
           for (let i = 0; i < rows.length; i++) {
             const verse = rows.item(i);
+            console.log("Verse item:", verse);
             favoriteVerses.push(verse);
           }
-
           resolve(favoriteVerses);
+        },
+        (_, error) => {
+          console.error("Error executing SQL:", error);
+          reject(error);
+        }
+      );
+    });
+  });
+}
+
+export function getFavoriteVerseById(id) {
+  return new Promise((resolve, reject) => {
+    db.transaction((transaction) => {
+      transaction.executeSql(
+        "SELECT * FROM favoriteVerse WHERE id = ?",
+        [id],
+        (_, result) => {
+          const rows = result.rows;
+
+          if (rows.length > 0) {
+            const verse = rows.item(0);
+            resolve(verse);
+          } else {
+            resolve(null);
+          }
         },
         (_, error) => {
           reject(error);
         }
       );
     });
+  });
+}
+
+export function updateFavoriteVerseAnnotation(id, annotation) {
+  db.transaction((transaction) => {
+    transaction.executeSql(
+      "UPDATE favoriteVerse SET annotation = ? WHERE id = ?",
+      [annotation, id],
+      (_, result) => {
+        console.log("Annotation updated successfully!");
+      },
+      (_, error) => {
+        console.error("Error updating annotation:", error);
+      }
+    );
   });
 }
