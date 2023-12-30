@@ -7,10 +7,13 @@ import { AntDesign } from "@expo/vector-icons";
 import { styles } from "./styles";
 import { getAllFavoriteVerses } from "../../services/SQLite/favoriteVerse";
 import ModalFavorite from "../../components/ModalFavorite";
+import Colors from "../../constants/Colors";
+import ModalDelete from "./Components/ModalDelete";
 
 export default function Favorite() {
   const [data, setData] = useState([]);
   const [activeModal, setActiveModal] = useState(false);
+  const [activeModalDelete, setActiveModalDelete] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
   const navigation = useNavigation();
   const handleGoBack = () => {
@@ -19,6 +22,11 @@ export default function Favorite() {
 
   const handlePress = (item) => {
     setActiveModal(true);
+    setSelectedItemId(item.id);
+  };
+
+  const handlePressDelete = (item) => {
+    setActiveModalDelete(true);
     setSelectedItemId(item.id);
   };
 
@@ -52,9 +60,14 @@ export default function Favorite() {
             style={styles.containerCardFavorite}
             onPress={() => handlePress(item)}
           >
-            <Text style={styles.titleCard}>
-              {item.book} - {item.chapter}
-            </Text>
+            <View style={styles.cardHeard}>
+              <Text style={styles.titleCard}>
+                {item.book} - {item.chapter}
+              </Text>
+              <TouchableOpacity onPress={() => handlePressDelete(item)}>
+                <AntDesign name="delete" size={24} color={Colors.background} />
+              </TouchableOpacity>
+            </View>
             <Text numberOfLines={2} style={styles.textCard}>
               {item.verse}
             </Text>
@@ -66,6 +79,11 @@ export default function Favorite() {
         selectedItemId={selectedItemId}
         setActiveModal={setActiveModal}
         modo="details"
+      />
+      <ModalDelete
+        activeModalDelete={activeModalDelete}
+        setActiveModalDelete={setActiveModalDelete}
+        selectedItemId={selectedItemId}
       />
     </>
   );

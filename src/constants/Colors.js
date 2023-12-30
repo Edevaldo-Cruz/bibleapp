@@ -4,4 +4,5 @@ export default {
   secondaryOpacity65: "rgba(217, 217, 217, 0.65)",
   text: "#FFFFFF",
   background: "#334F59",
+  grey: "rgba(128, 128, 128, 0.5)",
 };

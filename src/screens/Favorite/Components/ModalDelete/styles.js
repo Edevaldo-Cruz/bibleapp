@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import Colors from "../../constants/Colors";
+import Colors from "../../../../constants/Colors";
 
 export const styles = StyleSheet.create({
   modalBackground: {
@@ -102,5 +102,28 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     color: Colors.background,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 20,
+  },
+  deleteButton: {
+    backgroundColor: Colors.grey,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+  cancelButton: {
+    backgroundColor: Colors.primary,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+  buttonText: {
+    color: Colors.background,
+    fontWeight: "bold",
+    fontSize: 16,
+    textAlign: "center",
   },
 });

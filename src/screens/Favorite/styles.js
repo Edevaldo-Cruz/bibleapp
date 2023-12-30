@@ -25,10 +25,11 @@ export const styles = StyleSheet.create({
   },
   containerCardFavorite: {
     width: "100%",
-    height: 100,
+    height: 110,
     marginTop: 8,
     paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingTop: 16,
+    paddingBottom: 16,
     backgroundColor: Colors.secondary,
     borderRadius: 16,
     borderColor: Colors.primary,
@@ -36,7 +37,6 @@ export const styles = StyleSheet.create({
     elevation: 5,
   },
   titleCard: {
-    width: "80%",
     color: Colors.background,
     fontWeight: "bold",
     marginHorizontal: 3,
@@ -50,5 +50,9 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     fontWeight: "700",
+  },
+  cardHeard: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
