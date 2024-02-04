@@ -39,3 +39,21 @@ export async function authenticateUser(email, password) {
     console.error(error);
   }
 }
+
+export async function newUser(name, email, password, notifications) {
+  try {
+    const result = await api.post(`users`, {
+      name: name,
+      email: email,
+      password: password,
+      notifications: notifications,
+    });
+    if (result.status === 200) {
+      return result.data;
+    } else {
+      throw new Error("Usuario criado com sucesso.");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}

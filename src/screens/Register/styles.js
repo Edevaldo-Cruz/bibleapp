@@ -10,26 +10,36 @@ export const styles = StyleSheet.create({
     alignContent: "center",
   },
   containerImage: {
+    flexDirection: "row",
     width: "100%",
-    height: "25%",
-    alignItems: "center",
+    height: 50,
     justifyContent: "center",
+    alignItems: "center",
+    marginTop: "8%",
+    marginBottom: "5%",
   },
+
   image: {
-    width: "100%",
+    width: "30%",
     height: "100%",
     resizeMode: "contain",
   },
   title: {
+    width: "70%",
+    height: "100%",
     color: Colors.text,
-    fontSize: 36,
-    textAlign: "center",
+    fontSize: 26,
+    textAlign: "left",
     fontWeight: "bold",
+    paddingTop: 8,
   },
   text: {
     marginVertical: 8,
     color: Colors.text,
     fontSize: 24,
+  },
+  containerInputs: {
+    marginVertical: 24,
   },
   inputs: {
     width: "16rem",
@@ -42,6 +52,7 @@ export const styles = StyleSheet.create({
     color: Colors.background,
     fontWeight: "800",
     fontSize: 20,
+    margin: 0,
   },
   viewBtn: {
     justifyContent: "center",
@@ -51,8 +62,15 @@ export const styles = StyleSheet.create({
   btn: {
     width: 228,
     height: 68,
-
     backgroundColor: Colors.primary,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 16,
+  },
+  btnDisabled: {
+    width: 228,
+    height: 68,
+    backgroundColor: Colors.grey,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 16,
@@ -63,9 +81,7 @@ export const styles = StyleSheet.create({
     color: Colors.text,
     fontWeight: "bold",
   },
-  inputPassword: {
-    flexDirection: "row",
-  },
+
   iconEye: {
     zIndex: 9,
     margin: 0,
@@ -79,5 +95,8 @@ export const styles = StyleSheet.create({
     marginVertical: 8,
     color: Colors.text,
     fontSize: 20,
+  },
+  confirm: {
+    marginTop: -20,
   },
 });

@@ -1,21 +1,37 @@
 import { useEffect, useState } from "react";
-import { Modal, View, Text, TouchableOpacity, TextInput } from "react-native";
+import { Modal, View, Text, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { styles } from "./styles";
 import Colors from "../../../../constants/Colors";
+import { deleteFavoriteVerse } from "../../../../services/SQLite/favoriteVerse";
 
 export default function ModalDelete({
   activeModalDelete,
   setActiveModalDelete,
   selectedItemId,
+  navigation,
+  updateFavoriteList,
 }) {
   const [modalVisible, setModalVisible] = useState(false);
-
   const closeModal = () => {
     setActiveModalDelete(false);
     setModalVisible(false);
   };
-  const handleDeleteConfirmation = () => {};
+
+  const handleDeleteConfirmation = async () => {
+    if (selectedItemId) {
+      try {
+        await deleteFavoriteVerse(selectedItemId);
+        navigation.navigate("Favorite");
+        updateFavoriteList();
+        navigation.navigate("Favorite");
+        setActiveModalDelete(false);
+        closeModal();
+      } catch (error) {
+        console.error("Erro ao deletar favorito:", error);
+      }
+    }
+  };
 
   useEffect(() => {
     if (activeModalDelete) {
@@ -46,16 +62,17 @@ export default function ModalDelete({
             </Text>
             <View style={styles.buttonContainer}>
               <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={handleDeleteConfirmation}
-              >
-                <Text style={styles.buttonText}>Excluir</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
                 style={styles.cancelButton}
                 onPress={closeModal}
               >
                 <Text style={styles.buttonText}>Cancelar</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => handleDeleteConfirmation()}
+              >
+                <Text style={styles.buttonText}>Excluir</Text>
               </TouchableOpacity>
             </View>
           </View>

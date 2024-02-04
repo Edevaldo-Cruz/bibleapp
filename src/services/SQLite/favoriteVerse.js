@@ -49,7 +49,6 @@ export function getAllFavoriteVerses() {
 
           for (let i = 0; i < rows.length; i++) {
             const verse = rows.item(i);
-            console.log("Verse item:", verse);
             favoriteVerses.push(verse);
           }
           resolve(favoriteVerses);
@@ -97,6 +96,21 @@ export function updateFavoriteVerseAnnotation(id, annotation) {
       },
       (_, error) => {
         console.error("Error updating annotation:", error);
+      }
+    );
+  });
+}
+
+export function deleteFavoriteVerse(id) {
+  db.transaction((transaction) => {
+    transaction.executeSql(
+      "DELETE FROM favoriteVerse WHERE id = ?",
+      [id],
+      (_, result) => {
+        console.log("Favorite deleted successfully!");
+      },
+      (_, error) => {
+        console.error("Error when deleting favorite:", error);
       }
     );
   });

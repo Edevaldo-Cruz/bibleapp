@@ -19,6 +19,7 @@ export default function ModalFavorite({
   chapter,
   modo = "create",
   selectedItemId,
+  updateFavoriteList,
 }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [annotationText, setAnnotationText] = useState("");
@@ -47,10 +48,15 @@ export default function ModalFavorite({
     closeModal();
   };
 
-  const handleUpdateAnnotation = () => {
+  const handleUpdateAnnotation = async () => {
     if (content && content.id) {
-      updateFavoriteVerseAnnotation(content.id, annotationText);
-      closeModal();
+      try {
+        await updateFavoriteVerseAnnotation(content.id, annotationText);
+        updateFavoriteList();
+        closeModal();
+      } catch (error) {
+        console.error("Erro editar a anotação do favorito:", error);
+      }
     }
   };
 
@@ -76,7 +82,7 @@ export default function ModalFavorite({
       };
       fetchFavoriteVerses();
     }
-  }, [modo, selectedItemId]);
+  }, [modo, selectedItemId, updateFavoriteList]);
 
   return (
     <Modal visible={modalVisible} animationType="slide" transparent={true}>

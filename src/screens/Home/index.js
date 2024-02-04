@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { FlatList, View } from "react-native";
+import { Alert, FlatList, View } from "react-native";
+import { useNavigation, DrawerActions } from "@react-navigation/native";
 
 import { styles } from "./styles";
 import HeaderSection from "./Components/HeaderSection";
@@ -16,7 +17,11 @@ export default function Home() {
   const [token, setToken] = useState("");
   const [id, setId] = useState();
   const [dataLoaded, setDataLoaded] = useState(false);
-  const [book, setBook] = useState("");
+  const navigation = useNavigation();
+
+  const openDrawer = () => {
+    navigation.dispatch(DrawerActions.openDrawer());
+  };
 
   const sections = [
     { key: "header", component: <HeaderSection nameUser={nameUser} /> },
@@ -69,7 +74,9 @@ export default function Home() {
     <FlatList
       style={styles.container}
       data={sections}
-      renderItem={({ item }) => <View>{item.component}</View>}
+      renderItem={({ item }) => (
+        <View>{React.cloneElement(item.component, { openDrawer })}</View>
+      )}
       keyExtractor={(item) => item.key}
     />
   );

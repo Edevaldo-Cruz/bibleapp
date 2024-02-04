@@ -59,7 +59,7 @@ export default function Login() {
       }
     } catch (error) {
       console.error(error);
-      Alert.alert("Erro ao obter token.");
+      Alert.alert("Erro, verifique as informações e tente novamente.");
     }
   }
 

@@ -2,15 +2,20 @@ import React from "react";
 import { View, Image, TextInput, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from "./styles";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, DrawerActions } from "@react-navigation/native";
+import "react-native-gesture-handler";
 
 import Logo from "../../../../assets/logo.png";
 
-export default function HeaderSection({ nameUser }) {
+export default function HeaderSection({ nameUser, openDrawer }) {
   const navigation = useNavigation();
 
   const handlePress = () => {
     navigation.navigate("Favorite");
+  };
+
+  const handleDrawer = () => {
+    openDrawer();
   };
 
   return (
@@ -18,7 +23,9 @@ export default function HeaderSection({ nameUser }) {
       <View style={styles.containerHeader}>
         <Image source={Logo} style={styles.image} />
         <TextInput style={styles.input} />
-        <Ionicons name="settings-sharp" size={32} color="#99B8C4" />
+        <TouchableOpacity onPress={handleDrawer}>
+          <Ionicons name="settings-sharp" size={32} color="#99B8C4" />
+        </TouchableOpacity>
       </View>
       <Text style={styles.text}>
         Seja bem-vindo(a){`\n`}

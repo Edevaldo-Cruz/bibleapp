@@ -13,8 +13,10 @@ import Load from "../components/Load";
 
 import { getUser } from "../services/SQLite/user";
 import Favorite from "../screens/Favorite";
+import ComponentsDrawer from "../components/Drawer";
 
 const Stack = createStackNavigator();
+
 export default function AppRoutes() {
   const [userExists, setUserExists] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -44,6 +46,11 @@ export default function AppRoutes() {
         {userExists ? (
           <>
             <Stack.Screen
+              name="ComponentsDrawer"
+              component={ComponentsDrawer}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
               name="Home"
               component={Home}
               options={{ headerShown: false }}
@@ -66,7 +73,7 @@ export default function AppRoutes() {
           </>
         ) : (
           <>
-            <Stack.Screen
+            {/* <Stack.Screen
               name="Welcome"
               component={Welcome}
               options={{ headerShown: false }}
@@ -86,8 +93,12 @@ export default function AppRoutes() {
               name="RecoverPassword"
               component={RecoverPassword}
               options={{ headerShown: false }}
+            /> */}
+            <Stack.Screen
+              name="ComponentsDrawer"
+              component={ComponentsDrawer}
+              options={{ headerShown: false }}
             />
-
             <Stack.Screen
               name="Home"
               component={Home}
