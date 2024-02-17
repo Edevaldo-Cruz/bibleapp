@@ -16,6 +16,7 @@ export default function Home() {
   const [nameUser, setNameUser] = useState("");
   const [token, setToken] = useState("");
   const [id, setId] = useState();
+  const [version, setVersion] = useState("");
   const [dataLoaded, setDataLoaded] = useState(false);
   const navigation = useNavigation();
 
@@ -24,7 +25,7 @@ export default function Home() {
   };
 
   const sections = [
-    { key: "header", component: <HeaderSection nameUser={nameUser} /> },
+    { key: "header", component: <HeaderSection nameUser={nameUser} id={id} /> },
     {
       key: "latestReadings",
       component: <LatestReadings receivedData={filter} token={token} id={id} />,
@@ -40,7 +41,9 @@ export default function Home() {
     },
     {
       key: "books",
-      component: <Books receivedData={filter} token={token} id={id} />,
+      component: (
+        <Books receivedData={filter} token={token} id={id} version={version} />
+      ),
     },
   ];
 
@@ -49,11 +52,12 @@ export default function Home() {
       try {
         const users = await getUser();
         if (users.length > 0) {
-          const { id, name, token } = users[0];
+          const { id, name, token, version } = users[0];
           setNameUser(name);
           setToken(token);
           setId(id);
           setDataLoaded(true);
+          setVersion(version);
         } else {
           console.log("Nenhum usuário encontrado");
           setDataLoaded(true);

@@ -5,7 +5,7 @@ export function createTableUser() {
     transaction.executeSql(
       "CREATE TABLE IF NOT EXISTS " +
         "user " +
-        "(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, token TEXT);"
+        "(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, version TEXT, token TEXT);"
     );
   });
 }
@@ -70,5 +70,20 @@ export async function getUser() {
         }
       );
     });
+  });
+}
+
+export async function updateVersion(id, version) {
+  db.transaction((transaction) => {
+    transaction.executeSql(
+      "UPDATE user SET version = ? WHERE id = ?",
+      [version, id],
+      (_, result) => {
+        console.log("Version updated successfully!");
+      },
+      (_, error) => {
+        console.error("Error updating version:", error);
+      }
+    );
   });
 }

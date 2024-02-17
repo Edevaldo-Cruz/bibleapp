@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
+import { updateVersion } from "../../services/SQLite/user";
 
-export default function VersionSelect() {
+export default function VersionSelect({ userId }) {
   const [selectedLanguage, setSelectedLanguage] = useState("nvi");
+
+  const handleUpdateVersion = (value) => {
+    updateVersion(userId, value);
+  };
 
   return (
     <View>
@@ -18,7 +23,10 @@ export default function VersionSelect() {
           { label: "Bíblia Revista e Atualizada (RA)", value: "ra" },
           { label: "Reina-Valera 1960 (RVR)", value: "rvr" },
         ]}
-        onValueChange={(value) => setSelectedLanguage(value)}
+        onValueChange={(value) => {
+          setSelectedLanguage(value);
+          handleUpdateVersion(value);
+        }}
         style={pickerSelectStyles}
         value={selectedLanguage}
       />

@@ -4,8 +4,9 @@ import { styles } from "./styles";
 import Home from "../../screens/Home";
 import VersionSelect from "../Select";
 
-export default function ComponentsDrawer() {
+export default function ComponentsDrawer({ route }) {
   const Drawer = createDrawerNavigator();
+  const userId = route.params?.userId || "";
   const CustomDrawerContent = ({ navigation }) => (
     <View style={styles.container}>
       <View>
@@ -22,7 +23,7 @@ export default function ComponentsDrawer() {
           <View style={styles.line}></View>
         </View>
         <Text style={styles.text}>Escolha a versão da biblia:</Text>
-        <VersionSelect />
+        <VersionSelect userId={userId} />
       </View>
       <View>
         <TouchableOpacity style={styles.btn}>

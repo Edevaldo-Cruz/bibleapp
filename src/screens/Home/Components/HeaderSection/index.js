@@ -7,7 +7,7 @@ import "react-native-gesture-handler";
 
 import Logo from "../../../../assets/logo.png";
 
-export default function HeaderSection({ nameUser, openDrawer }) {
+export default function HeaderSection({ nameUser, openDrawer, id }) {
   const navigation = useNavigation();
 
   const handlePress = () => {

@@ -21,7 +21,7 @@ import ModalFavorite from "../../components/ModalFavorite";
 export default function Reader() {
   const route = useRoute();
   const navigation = useNavigation();
-  const { book, abbrev, chapter, token, id } = route.params;
+  const { book, abbrev, chapter, token, id, version } = route.params;
 
   const [versesLoaded, setVersesLoaded] = useState(false);
   const [verses, setVerses] = useState([]);
@@ -61,7 +61,7 @@ export default function Reader() {
   async function getVerses() {
     try {
       const result = await getChapterWithToken(
-        "nvi",
+        version,
         currentAbbrev,
         currentChapter,
         token
@@ -145,7 +145,7 @@ export default function Reader() {
                 <AntDesign name="arrowleft" size={38} color="#FFF" />
               </TouchableOpacity>
               <TouchableOpacity style={styles.containerVersion}>
-                <Text style={styles.textVersion}>NVI</Text>
+                <Text style={styles.textVersion}>{version.toUpperCase()}</Text>
                 <AntDesign name="earth" size={22} color="#FFF" />
               </TouchableOpacity>
             </View>

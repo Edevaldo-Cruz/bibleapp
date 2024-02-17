@@ -20,6 +20,7 @@ const Stack = createStackNavigator();
 export default function AppRoutes() {
   const [userExists, setUserExists] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [id, setId] = useState("");
 
   useEffect(() => {
     async function fetchUsers() {
@@ -27,6 +28,7 @@ export default function AppRoutes() {
         const user = await getUser();
         if (user && user.length > 0) {
           setUserExists(true);
+          setId(user[0].id);
         }
         setDataLoaded(true);
       } catch (error) {
@@ -49,7 +51,9 @@ export default function AppRoutes() {
               name="ComponentsDrawer"
               component={ComponentsDrawer}
               options={{ headerShown: false }}
+              initialParams={{ userId: id }}
             />
+
             <Stack.Screen
               name="Home"
               component={Home}
@@ -73,7 +77,7 @@ export default function AppRoutes() {
           </>
         ) : (
           <>
-            {/* <Stack.Screen
+            <Stack.Screen
               name="Welcome"
               component={Welcome}
               options={{ headerShown: false }}
@@ -93,12 +97,14 @@ export default function AppRoutes() {
               name="RecoverPassword"
               component={RecoverPassword}
               options={{ headerShown: false }}
-            /> */}
+            />
             <Stack.Screen
               name="ComponentsDrawer"
               component={ComponentsDrawer}
               options={{ headerShown: false }}
+              initialParams={{ userId: id }}
             />
+
             <Stack.Screen
               name="Home"
               component={Home}
