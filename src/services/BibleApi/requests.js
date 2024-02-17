@@ -57,3 +57,18 @@ export async function newUser(name, email, password, notifications) {
     console.error(error);
   }
 }
+
+export async function RecoverPasswordUser(email) {
+  try {
+    const encodedEmail = encodeURIComponent(email);
+    const url = `users/password/${encodedEmail}`;
+
+    const result = await api.post(url);
+    if (result.status === 200) {
+      console.log("Senha recuperada com sucesso!");
+    }
+  } catch (error) {
+    console.error("Erro ao recuperar a senha:", error.message);
+    throw error;
+  }
+}
