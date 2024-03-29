@@ -19,7 +19,7 @@ import { RecoverPasswordUser } from "../../services/BibleApi/requests";
 export default function RecoverPassword() {
   const [email, setEmail] = useState("");
   const [successModalVisible, setSuccessModalVisible] = useState(false);
-  const [errorModalVisible, setErrorModalVisible] = useState(true);
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
   const navigation = useNavigation();
   const scrollViewRef = useRef(null);
   const [countdown, setCountdown] = useState(300);

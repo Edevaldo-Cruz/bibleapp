@@ -20,7 +20,7 @@ import { savesUserInformation, getAllUsers } from "../../services/SQLite/user";
 export default function Login() {
   const [hidePassword, setHidePassword] = useState(true);
   const [email, setEmail] = useState("edevaldo_cruz@hotmail.com");
-  const [password, setPassword] = useState("senhaTeste");
+  const [password, setPassword] = useState("4Bu4rGMYuH");
   const navigation = useNavigation();
 
   const scrollViewRef = useRef(null);
