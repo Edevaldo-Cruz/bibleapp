@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import Welcome from "../screens/Welcome";
 import Login from "../screens/Login";
@@ -11,11 +11,11 @@ import Reader from "../screens/Reader";
 import Annotation from "../screens/Annotation";
 import Load from "../components/Load";
 
-import { getUser } from "../services/SQLite/user";
+import { getUserActive } from "../services/SQLite/user";
 import Favorite from "../screens/Favorite";
 import ComponentsDrawer from "../components/Drawer";
 
-const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
 export default function AppRoutes() {
   const [userExists, setUserExists] = useState(false);
@@ -25,7 +25,7 @@ export default function AppRoutes() {
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const user = await getUser();
+        const user = await getUserActive();
         if (user && user.length > 0) {
           setUserExists(true);
           setId(user[0].id);
@@ -44,90 +44,56 @@ export default function AppRoutes() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        {userExists ? (
-          <>
-            <Stack.Screen
-              name="ComponentsDrawer"
-              component={ComponentsDrawer}
-              options={{ headerShown: false }}
-              initialParams={{ userId: id }}
-            />
-
-            <Stack.Screen
-              name="Home"
-              component={Home}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Reader"
-              component={Reader}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Annotation"
-              component={Annotation}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Favorite"
-              component={Favorite}
-              options={{ headerShown: false }}
-            />
-          </>
-        ) : (
-          <>
-            <Stack.Screen
-              name="Welcome"
-              component={Welcome}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Login"
-              component={Login}
-              options={{ headerShown: false }}
-            />
-
-            <Stack.Screen
-              name="Register"
-              component={Register}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="RecoverPassword"
-              component={RecoverPassword}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="ComponentsDrawer"
-              component={ComponentsDrawer}
-              options={{ headerShown: false }}
-              initialParams={{ userId: id }}
-            />
-
-            <Stack.Screen
-              name="Home"
-              component={Home}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Reader"
-              component={Reader}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Annotation"
-              component={Annotation}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Favorite"
-              component={Favorite}
-              options={{ headerShown: false }}
-            />
-          </>
-        )}
-      </Stack.Navigator>
+      <Drawer.Navigator
+        initialRouteName={userExists ? "ComponentsDrawer" : "Welcome"}
+      >
+        <Drawer.Screen
+          name="ComponentsDrawer"
+          component={ComponentsDrawer}
+          options={{ headerShown: false }}
+          initialParams={{ userId: id }}
+        />
+        <Drawer.Screen
+          name="Welcome"
+          component={Welcome}
+          options={{ headerShown: false }}
+        />
+        <Drawer.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
+        <Drawer.Screen
+          name="Register"
+          component={Register}
+          options={{ headerShown: false }}
+        />
+        <Drawer.Screen
+          name="RecoverPassword"
+          component={RecoverPassword}
+          options={{ headerShown: false }}
+        />
+        <Drawer.Screen
+          name="Home"
+          component={Home}
+          options={{ headerShown: false }}
+        />
+        <Drawer.Screen
+          name="Reader"
+          component={Reader}
+          options={{ headerShown: false }}
+        />
+        <Drawer.Screen
+          name="Annotation"
+          component={Annotation}
+          options={{ headerShown: false }}
+        />
+        <Drawer.Screen
+          name="Favorite"
+          component={Favorite}
+          options={{ headerShown: false }}
+        />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }

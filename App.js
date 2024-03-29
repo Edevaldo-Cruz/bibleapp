@@ -20,7 +20,6 @@ export default function App() {
         console.error("Erro ao criar tabelas:", error);
       }
     }
-
     setupTables();
   }, []);
 

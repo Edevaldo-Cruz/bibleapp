@@ -15,7 +15,12 @@ import { Feather } from "@expo/vector-icons";
 
 import { styles } from "./styles";
 import { authenticateUser } from "../../services/BibleApi/requests";
-import { savesUserInformation, getAllUsers } from "../../services/SQLite/user";
+import {
+  savesUserInformation,
+  getAllUsers,
+  loginActiveUser,
+  getUserByName,
+} from "../../services/SQLite/user";
 
 export default function Login() {
   const [hidePassword, setHidePassword] = useState(true);
@@ -48,12 +53,14 @@ export default function Login() {
     setPassword(newPassword);
   };
 
-  async function getToken() {
+  const getToken = async () => {
     try {
       const result = await authenticateUser(email, password);
       if (result) {
         await savesUserInformation(result);
-        navigation.navigate("Home");
+        await loginActiveUser(result.name);
+        var user = await getUserByName(result.name);
+        navigation.navigate("ComponentsDrawerrr");
       } else {
         Alert.alert("Email ou senha incorreta.");
       }
@@ -61,7 +68,7 @@ export default function Login() {
       console.error(error);
       Alert.alert("Erro, verifique as informações e tente novamente.");
     }
-  }
+  };
 
   // async function fetchUsers() {
   //   try {

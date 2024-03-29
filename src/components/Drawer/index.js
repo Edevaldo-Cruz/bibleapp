@@ -1,12 +1,21 @@
 import { Text, View, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { styles } from "./styles";
 import Home from "../../screens/Home";
 import VersionSelect from "../Select";
+import { logoff } from "../../services/SQLite/user";
 
 export default function ComponentsDrawer({ route }) {
+  const navigation = useNavigation();
   const Drawer = createDrawerNavigator();
   const userId = route.params?.userId || "";
+
+  const handleLogoff = async () => {
+    await logoff();
+    navigation.navigate("Welcome");
+  };
+
   const CustomDrawerContent = ({ navigation }) => (
     <View style={styles.container}>
       <View>
@@ -26,7 +35,7 @@ export default function ComponentsDrawer({ route }) {
         <VersionSelect userId={userId} />
       </View>
       <View>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity onPress={handleLogoff} style={styles.btn}>
           <Text>Logoff</Text>
         </TouchableOpacity>
         <Text>**Desenvolvido por Edevaldo Cruz**</Text>
