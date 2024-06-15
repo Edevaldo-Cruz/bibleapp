@@ -22,10 +22,7 @@ export default function ModalDelete({
     if (selectedItemId) {
       try {
         await deleteFavoriteVerse(selectedItemId);
-        navigation.navigate("Favorite");
-        updateFavoriteList();
-        navigation.navigate("Favorite");
-        setActiveModalDelete(false);
+        updateFavoriteList(); // Atualiza a lista de favoritos
         closeModal();
       } catch (error) {
         console.error("Erro ao deletar favorito:", error);
@@ -70,7 +67,7 @@ export default function ModalDelete({
 
               <TouchableOpacity
                 style={styles.deleteButton}
-                onPress={() => handleDeleteConfirmation()}
+                onPress={handleDeleteConfirmation}
               >
                 <Text style={styles.buttonText}>Excluir</Text>
               </TouchableOpacity>

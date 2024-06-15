@@ -84,6 +84,12 @@ export default function ModalFavorite({
     }
   }, [modo, selectedItemId, updateFavoriteList]);
 
+  // useEffect(() => {
+  //   if (content.annotation) {
+  //     setAnnotationText(content.annotation);
+  //   }
+  // }, [content.annotation]);
+
   return (
     <Modal visible={modalVisible} animationType="slide" transparent={true}>
       <View style={styles.modalBackground}>
@@ -125,7 +131,7 @@ export default function ModalFavorite({
                     placeholder="Digite sua anotação"
                     placeholderTextColor={Colors.text}
                     onChangeText={(text) => setAnnotationText(text)}
-                    value={annotationText}
+                    value={content.annotation}
                     multiline
                     numberOfLines={3}
                     editable={true}

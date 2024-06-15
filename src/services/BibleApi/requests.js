@@ -2,6 +2,7 @@ import api from "./api";
 
 export async function getChapter(version, abbrev, chapter) {
   try {
+    version = version || "nvi";
     const result = await api.get(`verses/${version}/${abbrev}/${chapter}`);
     return result;
   } catch (error) {
@@ -12,6 +13,11 @@ export async function getChapter(version, abbrev, chapter) {
 
 export async function getChapterWithToken(version, abbrev, chapter, token) {
   try {
+    version = version || "nvi";
+    console.log(version);
+    console.log(abbrev);
+    console.log(chapter);
+    console.log(token);
     const result = await api.get(`verses/${version}/${abbrev}/${chapter}`, {
       headers: {
         Authorization: `Bearer ${token}`,

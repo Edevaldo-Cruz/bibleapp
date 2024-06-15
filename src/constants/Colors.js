@@ -1,8 +1,8 @@
 export default {
-  primary: "#6AA3B7",
-  secondary: "#D9D9D9",
-  secondaryOpacity65: "rgba(217, 217, 217, 0.65)",
-  text: "#FFFFFF",
-  background: "#334F59",
-  grey: "rgba(128, 128, 128, 0.5)",
+  primary: "#8FBC8F", // Dark Sea Green
+  secondary: "#A9DFBF", // Light Green
+  secondaryOpacity65: "rgba(169, 223, 191, 0.65)", // Light Green with opacity
+  text: "#FFFFFF", // White
+  background: "#2C3E50", // Midnight Blue
+  grey: "rgba(45, 62, 80, 0.5)", // Dark Blue with opacity
 };

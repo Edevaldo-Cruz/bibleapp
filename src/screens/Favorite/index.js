@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
 import { AntDesign } from "@expo/vector-icons";
-
 import { styles } from "./styles";
 import { getAllFavoriteVerses } from "../../services/SQLite/favoriteVerse";
 import ModalFavorite from "../../components/ModalFavorite";
@@ -16,6 +14,7 @@ export default function Favorite() {
   const [activeModalDelete, setActiveModalDelete] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
   const navigation = useNavigation();
+
   const handleGoBack = () => {
     navigation.goBack();
   };
@@ -30,15 +29,20 @@ export default function Favorite() {
     setSelectedItemId(item.id);
   };
 
+  const fetchFavoriteVerses = async () => {
+    try {
+      const verses = await getAllFavoriteVerses();
+      setData(verses);
+    } catch (error) {
+      console.error("Erro ao obter versículos favoritos:", error);
+    }
+  };
+
+  const updateFavoriteList = () => {
+    fetchFavoriteVerses();
+  };
+
   useEffect(() => {
-    const fetchFavoriteVerses = async () => {
-      try {
-        const verses = await getAllFavoriteVerses();
-        setData(verses);
-      } catch (error) {
-        console.error("Erro ao obter versículos favoritos:", error);
-      }
-    };
     fetchFavoriteVerses();
   }, []);
 
@@ -84,6 +88,8 @@ export default function Favorite() {
         activeModalDelete={activeModalDelete}
         setActiveModalDelete={setActiveModalDelete}
         selectedItemId={selectedItemId}
+        navigation={navigation}
+        updateFavoriteList={updateFavoriteList}
       />
     </>
   );

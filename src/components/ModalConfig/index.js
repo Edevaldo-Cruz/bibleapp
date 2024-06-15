@@ -1,4 +1,5 @@
-import { Text, View, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { Text, View, TouchableOpacity, Modal } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { styles } from "./styles";
@@ -6,17 +7,18 @@ import Home from "../../screens/Home";
 import VersionSelect from "../Select";
 import { logoff } from "../../services/SQLite/user";
 
-export default function ComponentsDrawer({ route }) {
+export default function ModalConfig({ route }) {
   const navigation = useNavigation();
   const Drawer = createDrawerNavigator();
   const userId = route.params?.userId || "";
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handleLogoff = async () => {
     await logoff();
     navigation.navigate("Welcome");
   };
 
-  const CustomDrawerContent = ({ navigation }) => (
+  const CustomDrawerContent = () => (
     <View style={styles.container}>
       <View>
         <View>
@@ -44,15 +46,25 @@ export default function ComponentsDrawer({ route }) {
   );
 
   return (
-    <Drawer.Navigator
-      drawerContent={(props) => <CustomDrawerContent {...props} />}
-      drawerPosition="right"
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+      onRequestClose={() => {
+        setModalVisible(!modalVisible);
+      }}
     >
-      <Drawer.Screen
-        name="Home"
-        component={Home}
-        options={{ headerShown: false }}
-      />
-    </Drawer.Navigator>
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          <CustomDrawerContent />
+          <TouchableOpacity
+            onPress={() => setModalVisible(!modalVisible)}
+            style={styles.closeBtn}
+          >
+            <Text style={styles.closeBtnText}>Fechar</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
   );
 }

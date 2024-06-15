@@ -21,7 +21,7 @@ export default function Home() {
   const navigation = useNavigation();
 
   const openDrawer = () => {
-    navigation.dispatch(DrawerActions.openDrawer());
+    navigation.navigate("ComponentsDrawer", { userId: id });
   };
 
   const sections = [

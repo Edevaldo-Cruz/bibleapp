@@ -60,7 +60,9 @@ export default function Login() {
         await savesUserInformation(result);
         await loginActiveUser(result.name);
         var user = await getUserByName(result.name);
-        navigation.navigate("ComponentsDrawerrr");
+        //navigation.navigate("ComponentsDrawer");
+
+        navigation.navigate("Home");
       } else {
         Alert.alert("Email ou senha incorreta.");
       }

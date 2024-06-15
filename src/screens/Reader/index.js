@@ -21,7 +21,15 @@ import ModalFavorite from "../../components/ModalFavorite";
 export default function Reader() {
   const route = useRoute();
   const navigation = useNavigation();
-  const { book, abbrev, chapter, token, id, version } = route.params;
+  const {
+    book,
+    abbrev,
+    chapter,
+    token,
+    id,
+    version: versionParam,
+  } = route.params;
+  const version = versionParam || "nvi";
 
   const [versesLoaded, setVersesLoaded] = useState(false);
   const [verses, setVerses] = useState([]);
@@ -33,18 +41,18 @@ export default function Reader() {
   const [selectedItem, setSelectedItem] = useState(null);
   const timeoutRef = useRef(null);
 
-  const handlePressIn = (item) => {
-    timeoutRef.current = setTimeout(() => {
-      setSelectedItem(item);
-      setActiveModal(true);
-    }, 500);
-  };
+  // const handlePressIn = (item) => {
+  //   timeoutRef.current = setTimeout(() => {
+  //     setSelectedItem(item);
+  //     setActiveModal(true);
+  //   }, 3500);
+  // };
 
-  const handlePressOut = (item) => {
-    clearTimeout(timeoutRef.current);
-    setSelectedItem(item);
-    setActiveModal(true);
-  };
+  // const handlePressOut = (item) => {
+  //   clearTimeout(timeoutRef.current);
+  //   setSelectedItem(item);
+  //   setActiveModal(true);
+  // };
 
   const handleGoBack = () => {
     navigation.goBack();
@@ -160,8 +168,8 @@ export default function Reader() {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.verseContainer}
-            onPressIn={() => handlePressIn(item)}
-            onPressOut={() => handlePressOut(item)}
+            // onPressIn={() => handlePressIn(item)}
+            // onPressOut={() => handlePressOut(item)}
           >
             <Text style={styles.verseText}>
               {item.number} {item.text}
